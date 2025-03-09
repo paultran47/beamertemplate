@@ -1,6 +1,7 @@
 # Contributing to beamertemplate
 
-A big welcome and thank you for considering contributing to this LaTeX CV template!
+A big welcome and thank you for considering contributing to this 
+colour-blind-friendly Beamer template!
 
 Reading and following these guidelines will help us make the contribution
 process easy and effective for everyone involved. It also communicates that you
