@@ -10,7 +10,7 @@ Tran's template for slides in Beamer.
 
 ---
 
-### Notable features
+## Notable features
 
 * Colour-blind-friendly template following [IBM's Design Library palette](https://davidmathlogic.com/colorblind/)
 
