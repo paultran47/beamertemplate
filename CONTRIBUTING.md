@@ -1,4 +1,4 @@
-# Contributing to latex-cv-with-biblatex-integration
+# Contributing to beamertemplate
 
 A big welcome and thank you for considering contributing to this LaTeX CV template!
 
@@ -26,7 +26,7 @@ changes, and helping you finalize your pull requests.
 ---
 
 By participating and contributing to this project, you agree to uphold my
-[Code of Conduct](https://github.com/paultran47/latex-cv-with-biblatex/blob/master/CODE_OF_CONDUCT.md).
+[Code of Conduct](https://github.com/paultran47/beamertemplate/blob/main/CODE_OF_CONDUCT.md).
 
 ---
 
@@ -36,7 +36,7 @@ Contributions are made to this repo via Issues and Pull Requests (PRs). A few
 general guidelines that cover both:
 
 * To report security vulnerabilities, please
-[refer to the instructions found in SECURITY.md](https://github.com/paultran47/latex-cv-with-biblatex/blob/gh-pages/SECURITY.md).
+[refer to the instructions found in SECURITY.md](https://github.com/paultran47/beamertemplate/blob/main/SECURITY.md).
 * Search for existing Issues and PRs before creating your own.
 * I work hard to makes sure issues are handled in a timely manner but, depending
 on the impact, it could take a while to investigate the root cause. A friendly
