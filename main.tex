@@ -6,7 +6,7 @@
 %% Colour palette chosen with colour blindness in
 %% mind: https://davidmathlogic.com/colorblind/
 %% Paul L. Tran
-%% Last updated: 15 Oct, 2024.
+%% Last updated: 05 Oct, 2025
 %=================================================
 
 %=================================================
@@ -31,13 +31,20 @@
 \providecommand{\tabularnewline}{\\}
 \usepackage{centernot}
 \usepackage{tikz}
-\usetikzlibrary{shapes, arrows, matrix, chains, positioning, decorations.pathreplacing, decorations.pathmorphing, backgrounds, tikzmark}
+\usetikzlibrary{shapes, arrows, matrix, chains, positioning, decorations.pathreplacing, decorations.pathmorphing, backgrounds, tikzmark, nef}
+\tikzset{input node/.style={circle, draw, fill=gray!20, minimum size=1cm},
+  hidden node/.style={circle, draw=blue!50, fill=blue!20, minimum size=1cm},
+  output node/.style={circle, draw=cyan!50, fill=cyan!20, minimum size=1cm},
+  arrow/.style={->, >=stealth}
+}
 \usepackage[
   sorting = nyt,
   citestyle = authoryear,
   bibstyle = authoryear-comp,
   defernumbers = true,
-  maxnames = 20,
+  maxnames = 2,
+  minnames = 1,
+  maxbibnames = 99,
   giveninits = false,
   bibencoding = utf8,
   terseinits = true,
@@ -56,7 +63,7 @@
 %% Customising theme and alert colours according to IBM's design palette for colour blindness (https://davidmathlogic.com/colorblind/)
 \definecolor{basecolor}{RGB}{100, 143, 255} % HEX #648fff
 \colorlet{darkbasecolor}{basecolor!60!black} % Section header slightly darker
-\definecolor{alertcolor}{RGB}{220, 38, 127} % HEX #dc267f
+\definecolor{alertcolor}{RGB}{181, 53, 116} % HEX #b53574
 \setbeamercolor{alerted text}{fg = alertcolor}
 
 %% Assigning colours to the theme
@@ -79,7 +86,8 @@
   \end{beamercolorbox}
 }
 
-%% Making option to widen slides
+%% Creating command to widen slide contents
+%% Format: \Wider[measurement]{Slide contents}
 \newcommand\Wider[2][3em]{%
   \makebox[\linewidth][c]{%
     \begin{minipage}{\dimexpr\textwidth+#1\relax}
@@ -120,9 +128,9 @@
       \insertshorttitle
     \end{beamercolorbox}%
     \begin{beamercolorbox}[wd = 0.333333\paperwidth,ht = 2.25ex,dp = 2ex,right]{footercolor}%
-      \insertframenumber
+      \insertframenumber{}
       %% Uncomment the line below if you wish to show the total frame number
-      % / \inserttotalframenumber
+      / \inserttotalframenumber
       \hspace*{4ex} 
     \end{beamercolorbox}
   }
@@ -155,7 +163,12 @@
 \title[Short Title]{\textbf{Title}\\Subtitle}
 \author[Surname]{Name Surname\thanks{Email: \href{mailto:your@email.address}{your@email.address}. Website: \href{https://google.com/}{https://yourwebsite.com/}.}}
 \institute[Institution]{Institution} 
-\date{\today}
+\date{
+  This version: \today\\
+  \begin{center}
+    {\small \href{https://github.com/paultran47/beamertemplate}{\alert{[Click here for the latest version]}}}
+  \end{center}
+}
 %=================================================
 
 %=================================================
@@ -271,12 +284,110 @@
     \end{table}
   \end{frame}
 
+  \section{Section C}
+  \begin{frame}{Slide in Section C}
+    \begin{columns}[T] % The [T] option aligns the columns at the top
+      \begin{column}{0.5\textwidth}
+        \begin{itemize}
+          \item \textbf{Data:} 4 variables $x_{t}^{1}, x_{t}^{2}, x_{t}^{3}, y_{t}$
+          \vspace{1mm}
+          \item \textbf{Goal:} Predict $y_{t}$ from $X \equiv x_{t}^{1}, x_{t}^{2}, x_{t}^{3}$
+          \vspace{1mm}
+          \item \textbf{Example:} 2 layers, 2 ``hidden'' nodes
+          \vspace{1mm}
+          \item From $X_{t}$ to $\hat{y}_{t}$ for observation $t \in T$:
+          \vspace{1mm}
+          \begin{itemize}
+            \item Linearly combine $x_{t}^{1}, x_{t}^{2}, x_{t}^{3} \to a_{t}^{1}, a_{t}^{2}$
+            \vspace{1mm}
+            \item $f$ is a non-linear function
+            \vspace{1mm}
+            \item $\hat{y}_t$ is predicted output
+          \end{itemize}
+          \vspace{1mm}
+          \item \textbf{Training} prediction error $\to$ update weights $w$
+          \vspace{1mm}
+          \item \textbf{Testing} prediction error $\to$ update network structure
+        \end{itemize}
+      \end{column}  
+      \begin{column}{0.5\textwidth}
+        \centering
+        \textbf{NN Figure}
+        \begin{tikzpicture}[nef, scale=0.8, every node/.style={scale=0.8}]
+          % Input Layer
+          \node[input node] (x1) at (0, 2) {$x_t^1$};
+          \node[input node] (x2) at (0, 0) {$x_t^2$};
+          \node[input node] (x3) at (0, -2) {$x_t^3$};         
+          % Hidden Layer
+          \node[hidden node] (h1) at (3, 1) {$f(a_t^1)$};
+          \node[hidden node] (h2) at (3, -1) {$f(a_t^2)$};      
+          % Output Layer
+          \node[output node] (y) at (6, 0) {$\hat{y}_t$};          
+          % Connections
+          \draw[arrow] (x1) -- node[above, sloped] {$w_{11}^1$} (h1);
+          \draw[arrow] (x1) -- node[above, sloped] {$w_{12}^1$} (h2);        
+          \draw[arrow] (x2) -- node[above, sloped, pos=0.2] {$w_{21}^1$} (h1);
+          \draw[arrow] (x2) -- node[above, sloped, pos=0.2] {$w_{22}^1$} (h2);
+          \draw[arrow] (x3) -- node[above, sloped, pos=0.2] {$w_{31}^1$} (h1);
+          \draw[arrow] (x3) -- node[below, sloped] {$w_{32}^1$} (h2);        
+          \draw[arrow] (h1) -- node[above, sloped] {$w_1^2$} (y);
+          \draw[arrow] (h2) -- node[below, sloped] {$w_2^2$} (y);
+        \end{tikzpicture}\\
+        \textbf{NN Matrix Algebra}
+        $
+          \begin{bmatrix}
+            x_t^1 & x_t^2 & x_t^3
+          \end{bmatrix}
+          \begin{bmatrix}
+            w_{11}^1 & w_{12}^1 \\
+            w_{21}^1 & w_{22}^1 \\
+            w_{31}^1 & w_{32}^1
+          \end{bmatrix}
+          =
+          \begin{bmatrix}
+            a_t^1 & a_t^2
+          \end{bmatrix}
+        $
+        $
+          \begin{bmatrix}
+            f(a_t^{1}) & f(a_{t}^{2})
+          \end{bmatrix}
+          \begin{bmatrix}
+            w_1^2 \\
+            w_2^2
+          \end{bmatrix}
+          = \hat{y}_t
+        $
+      \end{column}
+    \end{columns}
+  \end{frame}
+
   \section{Conclusion}
   \begin{frame}{Conclusion}
     \begin{itemize}
       \item That's all
     \end{itemize}
   \end{frame}
+
+  %% Redefining footer after conclusion to not have total frame number
+  \setbeamertemplate{footline}{
+    \hbox{
+      \setbeamercolor{footercolor}{bg = white, fg = white!50!black}
+      \begin{beamercolorbox}[wd = 0.333333\paperwidth,ht = 2.25ex, dp = 2ex, left]{footercolor}%
+        \hspace*{2ex} \insertshortauthor\hspace*{0.5ex}  (\insertshortinstitute)
+      \end{beamercolorbox}%
+      \begin{beamercolorbox}[wd = 0.333333\paperwidth,ht = 2.25ex, dp = 2ex, center]{footercolor}%
+        \insertshorttitle
+      \end{beamercolorbox}%
+      \begin{beamercolorbox}[wd = 0.333333\paperwidth,ht = 2.25ex,dp = 2ex,right]{footercolor}%
+        % \insertframenumber{}
+        %% Uncomment the line below if you wish to show the total frame number
+        % / \inserttotalframenumber
+        \hspace*{4ex} 
+      \end{beamercolorbox}
+    }
+    \vskip0pt
+  }
 
   %% The frame number of all slides in the following group are considered as empty in
   %%the actual PDF, but has the original definition in the PDF metadata 
@@ -297,11 +408,13 @@
     %% Creating references slides
     %% Making references font size to be tiny
     \renewcommand*{\bibfont}{\normalfont\tiny}
-    \begin{frame}[t, noframenumbering]{References} % add option allowframebreaks if long reference list
+    \begin{frame}[t, noframenumbering, allowframebreaks]{References} % add option allowframebreaks if long reference list
       \printbibliography
     \end{frame}
 
     %% Additional slides that are linked
+    %% Declaring empty section to serve as the appendix section without hiding the navigation bar
+    \section*{}
     \begin{frame}[noframenumbering]{Appendix \hfill\hyperlink{introduction}{\beamerbutton{Back to Introduction}}}\label{app}
     \end{frame}
   \endgroup
